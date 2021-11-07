@@ -81,7 +81,6 @@ const Write = ({ navigation: { goBack } }) => {
         message: feelings,
       });
     });
-    console.log(selectedEmotion, feelings);
     goBack();
   };
   return (
