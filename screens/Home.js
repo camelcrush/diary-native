@@ -59,10 +59,8 @@ const Home = ({ navigation: { navigate } }) => {
   const [feelings, setFeelings] = useState([]);
   useEffect(() => {
     const feelings = realm.objects("Feeling");
-    setFeelings(feelings);
-    feelings.addListener(() => {
-      const feelings = realm.objects("Feeling");
-      setFeelings(feelings);
+    feelings.addListener((feelings, changes) => {
+      setFeelings(feelings.sorted("_id", true));
     });
     return () => {
       feelings.removeAllListeners();
