@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import colors from "../colors";
 import { useDB } from "../context";
 import { FlatList } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 const View = styled.View`
   flex: 1;
@@ -66,6 +67,12 @@ const Home = ({ navigation: { navigate } }) => {
       feelings.removeAllListeners();
     };
   }, []);
+  const onPressDelete = (id) => {
+    realm.write(() => {
+      const feeling = realm.objectForPrimaryKey("Feeling", id);
+      realm.delete(feeling);
+    });
+  };
   return (
     <View>
       <Title>My journal</Title>
@@ -74,10 +81,12 @@ const Home = ({ navigation: { navigate } }) => {
         ItemSeparatorComponent={Separator}
         keyExtractor={(feeling) => feeling._id + ""}
         renderItem={({ item }) => (
-          <Record>
-            <Emotion>{item.emotion}</Emotion>
-            <Message>{item.message}</Message>
-          </Record>
+          <TouchableOpacity onPress={() => onPressDelete(item._id)}>
+            <Record>
+              <Emotion>{item.emotion}</Emotion>
+              <Message>{item.message}</Message>
+            </Record>
+          </TouchableOpacity>
         )}
       />
       <Btn onPress={() => navigate("Write")}>
