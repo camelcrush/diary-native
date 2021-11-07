@@ -3,8 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import colors from "../colors";
 import { useDB } from "../context";
-import { FlatList } from "react-native";
-import { TouchableOpacity } from "react-native";
+import { FlatList, TouchableOpacity, LayoutAnimation } from "react-native";
 
 const View = styled.View`
   flex: 1;
@@ -40,6 +39,7 @@ const Record = styled.View`
   align-items: center;
   padding: 10px 20px;
   border-radius: 10px;
+  box-shadow: 1px 1px 1px rgba(41, 30, 95, 0.1);
 `;
 
 const Emotion = styled.Text`
@@ -61,6 +61,7 @@ const Home = ({ navigation: { navigate } }) => {
   useEffect(() => {
     const feelings = realm.objects("Feeling");
     feelings.addListener((feelings, changes) => {
+      LayoutAnimation.spring();
       setFeelings(feelings.sorted("_id", true));
     });
     return () => {
